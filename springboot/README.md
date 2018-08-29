@@ -46,3 +46,7 @@
     `@Import`注解是Spring的底层注解，给容器中导入一个组件
     @Import的Javadoc对这个注解的解释
     > Indicates one or more @Configuration classes to import.(与Spring XML中的`<import>`标签作用相同)
+    
+    `@AutoConfiguration`引入了`AutoConfigurationPackages.Registrar.class`这个配置类。将Spring所在的包和子包的所有组件扫描到Spring容器中。
+
+    `@EnableAutoConfiguration`引入`AutoConfigurationImportSelector.class`，决定导入哪些组件的选择器。
