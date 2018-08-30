@@ -1,6 +1,6 @@
 # Spring Base Note
 
-## Spring注解方式(`@Configuration`)
+## Spring 注解方式(`@Configuration`)
 
 ```java
 @Configuration
@@ -12,7 +12,7 @@ public class AppConfig {
     }
 }
 ```
-通过`AnnotationConfigApplicationContext`启动注解类的Spring容器，web环境下通过`org.springframework.web.context.support.AnnotationConfigWebApplicationContext`启动。
+通过 `AnnotationConfigApplicationContext` 启动注解类的Spring容器，web环境下通过 `org.springframework.web.context.support.AnnotationConfigWebApplicationContext`启动。
 
 ```java
  AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -22,7 +22,7 @@ public class AppConfig {
  // use
 ```
 
-### 通过Spring XML方式 
+### 通过 Spring XML 方式 
 ```xml
 <beans>
     <context:annotation-config/>
@@ -30,8 +30,8 @@ public class AppConfig {
  </beans>
 ```
 
-### 为注册的Bean设置具体的值
-通过`org.springframework.core.env.Environment`
+### 为注册的 Bean 设置具体的值
+通过 `org.springframework.core.env.Environment`
 ```java
 @Configuration
 public class AppConfig {
@@ -46,7 +46,7 @@ public class AppConfig {
 }
 ```
 
-### 通过`@PropertySource`获取properties文件的属性值
+### 通过 `@PropertySource` 获取 properties 文件的属性值
 ```java
 @Configuration
 @PropertySource("classpath:/com/xxx/app.properties")
@@ -61,7 +61,7 @@ public class AppConfig {
 }
 ```
 
-### 使用`@Value`注解
+### 使用 `@Value` 注解
 ```java
 @Configuration
 @PropertySource("classpath:/com/acme/app.properties")
@@ -75,7 +75,7 @@ public class AppConfig {
 }
 ```
 
-### 使用`@Import`
+### 使用 `@Import`
 可以引入其他的配置。
 ```java
 @Configuration
@@ -103,9 +103,9 @@ public class AppConfig {
 }
 ```
 
-### 使用`@Profile`标签
+### 使用 `@Profile` 标签
 
-`@Profile`标签可以区分生产环境和开发环境
+`@Profile` 标签可以区分生产环境和开发环境
 ```java
 @Profile("development")
 @Configuration
@@ -128,8 +128,8 @@ public class ProductionDatabaseConifg {
 ```
 也可以在方法上使用该注解。
 
-### 使用`@ImportSource`引入Spring XML的注解
-在使用Java类作为Spring的配置时可以使用`@ImportSource`注解引入
+### 使用 `@ImportSource` 引入Spring XML的注解
+在使用 Java 类作为 Spring 的配置时可以使用 `@ImportSource` 注解引入
 ```java
 @Configuration
 @ImportSource("classpath:/com/xxx/database-config.xml")
@@ -144,7 +144,7 @@ public class AppConfig {
 ```
 
 ### 内部类
-`@Configuration`可以标注内部类。
+`@Configuration` 可以标注内部类。
 ```java
 @Configuration
 public class AppConfig {
@@ -166,11 +166,11 @@ public class AppConfig {
 ```
 
 ### 配置延迟初始化
-在默认情况下，被`@Bean`标签注解的方法会在容器启动的时候直接实例化。可以使用`@Lazy`注解配置延迟实例化，也可以标记与方法上。
+在默认情况下，被 `@Bean` 标签注解的方法会在容器启动的时候直接实例化。可以使用`@Lazy`注解配置延迟实例化，也可以标记与方法上。
 
 
 ### 测试环境
-可以通过Spring-test模块使用Spring TextContext框架，用`@ContextConfiguration`注解便可使用。
+可以通过 Spring-test 模块使用 Spring TextContext 框架，用 `@ContextConfiguration` 注解便可使用。
 ```java
 @RunWith(SpringJunit4ClassRunner.class)
 @ContextConfiguration(classes={AppConfig.class, DatabaseConfig.class})
@@ -187,10 +187,10 @@ public class MyTests {
 }
 ```
 
-### 使用`@Configuration`的注意点
+### 使用 `@Configuration` 的注意点
 
-* __Configuration注解类必须通过类不能通过factory的方式获取，为了可以在运行时通过子类扩展。__
-* __类不能是`final`__
+* __Configuration 注解类必须通过类不能通过 factory 的方式获取，为了可以在运行时通过子类扩展。__
+* __类不能是 `final`__
 * __类不能是本地的（如：不能在一个方法里声明）__
-* __任何内部类的配置类必须用`static`声明__
-* __被`@Bean`标注的方法再返回一个配置类（任何这种类会被视为一般的bean，它们的`@Configuraiton`不会被察觉）__ 
+* __任何内部类的配置类必须用 `static` 声明__
+* __被 `@Bean` 标注的方法再返回一个配置类（任何这种类会被视为一般的 bean，它们的 `@Configuraiton` 不会被察觉）__ 
