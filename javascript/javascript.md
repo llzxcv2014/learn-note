@@ -4,7 +4,7 @@
 
 ### 为何要使用 `this` 关键字
 
-```java
+```javascript
 function identify() {
     return this.name.toUpperCase();
 }
@@ -29,7 +29,8 @@ speak.call( you ); // Hello, I'm READER
 
 在不同的上下文对象中重复使用函数，不用针对每个对象编写不同的实现。
 `this` 以一种更优雅的方式隐式“传递”一个对象的引用，可以将API设计得更加简洁。
-```java
+
+```javascript
 function foo(num) {
     console.log( "foo: " + num );
     // 记录 foo 被调用的次数
