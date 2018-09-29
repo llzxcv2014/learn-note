@@ -545,6 +545,48 @@ class MyTask implements Runnable {
 * CPU密集型任务，就需要尽量压榨CPU，参考值可以设为 n + 1
 * IO密集型任务，参考值可以设置为 2 * n
 
+### 1.7的改变
+
+#### `ctl`
+
+它记录了当前线程池的运行状态和线程池内的线程数；一个变量是怎么记录两个值的呢？它是一个AtomicInteger 类型，有32个字节，这个32个字节中，高3位用来标识线程池的运行状态，低29位用来标识线程池内当前存在的线程数；
+
+Jdk1.7开始使用`ctl(main pool control state)`是一个`atomic integer`包装了两个字段
+
+1. `WorkerCount`:显示有效的线程数
+2. `runState`:反应线程池是运行还是关闭
+
+为了将他们包装到一个整型,将`workerCount`限制在 $2^{29}-1$ 大约5亿个线程而不是 $2^{31}-1$.这个参数以后可以扩展为`AtomicLong`.但int型更快和简单一点。
+
+#### `runState`的状态：
+
+1. `RUNNING`：接受新的任务，运行队列里的任务
+2. `SHUTDOWN`：不接受新的任务，运行队列里的任务
+3. `STOP`：不接受新的任务，不运行队列里的任务，中断正在执行的任务
+4. `TIDYING`：所有的任务都结束，`workCount`为0，线程转为`TIDYING`状态会运行`terminated()`钩子方法。
+5. `TERMINATED`：`terminated()`方法运行完成
+
+#### 状态间的转换：
+
+* `RUNNING -> SHUTDOWN`：调用`shutdown()`
+* `(RUNNING or SHUTDOWN) -> STOP`：调用`shutdownNow()`
+* `SHUTDOWN -> TIDYING`：阻塞队列和池都为空
+* `STOP -> TIDYING`：池为空
+* `TIDYING -> TERMINATED`：`terminated()`钩子方法执行完成。
+
+#### 与ctl相关的三个方法
+
+```java
+//获取线程池的状态,也就是将ctl低29位都置为0后的值
+private static int runStateOf(int c)    { return c & ~CAPACITY; }
+//获取线程池中线程数，也就是ctl低29位的值
+private static int workerCountOf(int c)  { return c & CAPACITY; }  
+//设置ctl的值，rs为线程池状态，wc为线程数；
+private static int ctlOf(int rs, int wc) { return rs | wc; }
+```
+
 ### 资料
 
 [Java线程池（ThreadPool）详解](https://www.cnblogs.com/kuoAT/p/6714762.html)
+
+[java程序员必精--从源码讲解java线程池ThreadPoolExecuter的实现原理、各种坑、如何监控](https://blog.csdn.net/zqz_zqz/article/details/69488570?locationNum=12&fps=1)
