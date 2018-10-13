@@ -590,3 +590,5 @@ private static int ctlOf(int rs, int wc) { return rs | wc; }
 [Java线程池（ThreadPool）详解](https://www.cnblogs.com/kuoAT/p/6714762.html)
 
 [java程序员必精--从源码讲解java线程池ThreadPoolExecuter的实现原理、各种坑、如何监控](https://blog.csdn.net/zqz_zqz/article/details/69488570?locationNum=12&fps=1)
+
+[线程池原理解析](https://www.cnblogs.com/cm4j/p/thread-pool.html)
